@@ -21,8 +21,8 @@ class Hyperparams:
     # Model
     r = 4 # Reduction factor. Do not change this.
     dropout_rate = 0.05
-    vocoder = 'RTSI-LA' # or RTSI-LA
-
+    vocoder = 'RTISI-LA' # or 
+    #vocoder = 'griffin_lim'
     e = 128 # == embedding
     d = 256 # == hidden units of Text2Mel
     c = 512 # == hidden units of SSRN

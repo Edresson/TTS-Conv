@@ -89,9 +89,9 @@ def spectrogram2wav(mag):
     if hp.vocoder == 'griffin_lim':
         # wav reconstruction
         wav = griffin_lim(mag**hp.power)
-    else: # RTSI-LA
+    elif hp.vocoder == 'RTISI-LA' : # RTISI-LA
         wav = iterate_invert_spectrogram(mag**hp.power)
-
+        
     # de-preemphasis
     wav = signal.lfilter([1], [1, -hp.preemphasis], wav)
 
