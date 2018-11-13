@@ -36,7 +36,7 @@ def load_data(mode="train"):
     '''
     # Load vocabulary
     char2idx, idx2char = load_vocab()
-
+    
     if mode=="train":
         if "LJ" in hp.data:
             # Parse
@@ -78,8 +78,6 @@ def load_data(mode="train"):
                 texts.append(np.array(text, np.int32).tostring())
 
             return fpaths, text_lengths, texts
-    
-            
         else: # nick or kate
             # Parse
             fpaths, text_lengths, texts = [], [], []
@@ -98,8 +96,49 @@ def load_data(mode="train"):
                 text_lengths.append(len(text))
                 texts.append(np.array(text, np.int32).tostring())
 
-        return fpaths, text_lengths, texts
+            return fpaths, text_lengths, texts
 
+    elif mode=="prepo":
+            if "LJ" in hp.data:
+                # Parse
+                fpaths, text_lengths, texts = [], [], []
+                transcript = os.path.join(hp.data, 'metadata.csv')
+                lines = codecs.open(transcript, 'r', 'utf-8').readlines()
+                for line in lines:
+                    fname, _, text = line.strip().split("|")
+
+                    fpath = os.path.join(hp.data, "wavs", fname + ".wav")
+                    fpaths.append(fpath)
+                    #print('Antes da normalizacao',text)
+                    text = text_normalize(text) + "E"  # E: EOS
+                    #print('Apos normalizacao',text)
+                    text = [char2idx[char] for char in text]
+                    text_lengths.append(len(text))
+                    #print('converte index',text)
+                    #print('final',np.array(text, np.int32).tostring())
+                    texts.append(np.array(text, np.int32).tostring())
+
+                return fpaths, texts
+
+            elif "Portuguese" in hp.data:
+                # Parse
+                fpaths, text_lengths, texts = [], [], []
+                transcript = os.path.join(hp.data, 'texts.csv')
+                lines = codecs.open(transcript, 'r', 'utf-8').readlines()
+                for line in lines:
+                    fname,text = line.strip().split("==")
+
+                    fpath = os.path.join(hp.data, "wavs", fname.split('/')[1])
+                    fpaths.append(fpath)
+                    #print('Antes da normalizacao',text)
+                    text = text_normalize(text)
+                    #print('Apos normalizacao',text)
+                    #text = [char2idx[char] for char in text]
+                    #print('converte index',text)
+                    #print('final',np.array(text, np.int32).tostring())
+                    texts.append(text)
+
+                return fpaths, texts
     else: # synthesize on unseen test text.
         # Parse
         lines = codecs.open(hp.test_data, 'r', 'utf-8').readlines()[1:]

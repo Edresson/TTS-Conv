@@ -12,9 +12,52 @@ import os
 from data_load import load_data
 import numpy as np
 import tqdm
+from hyperparams import Hyperparams as hp
+import codecs
+from PETRUS.g2p.g2p import G2PTranscriber
+
+def texts_to_phonemes(fpaths,texts):
+    transcript = os.path.join(hp.data, 'texts-phoneme.csv')
+    alpha=os.path.join(hp.data, 'phoneme-alphabet.csv')
+    transcript= codecs.open(transcript, 'w', 'utf-8')
+    alphabet_list=[]
+    #print('Texts:',texts)
+    for i in range(len(texts)):
+        words = texts[i].strip().lower().split(' ')
+        transcrito = [] 
+        for word in words:
+            #print(word)
+            # Initialize g2p transcriber
+            g2p = G2PTranscriber(word, algorithm='silva')
+            transcription = g2p.transcriber()
+            transcrito.append(transcription)
+            for caracter in transcription:
+                if caracter not in alphabet_list:
+                    print(fpaths[i],word,':',caracter)
+                    alphabet_list.append(caracter)
+           
+        #print('Frase: ',"_".join(words))
+        #print('Transcricao: ',"_".join(transcrito))
+
+        frase = str(fpaths[i])+'=='+"_".join(transcrito)+'\n'
+        #print(frase)
+
+        transcript.write(frase)
+
+    alphabet = codecs.open(alpha, 'w', 'utf-8')
+    print(alphabet_list)
+    for i in alphabet_list:
+        alphabet.write(i)
+    
+    
+    
 
 # Load data
-fpaths, _, _ = load_data() # list
+fpaths, texts = load_data(mode="prepo") # list
+
+if hp.phoneme == True:
+    if hp.language =='pt':
+        texts_to_phonemes(fpaths,texts)
 
 for fpath in tqdm.tqdm(fpaths):
     fname, mel, mag = load_spectrograms(fpath)

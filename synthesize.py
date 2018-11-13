@@ -18,6 +18,9 @@ from data_load import load_data
 from scipy.io.wavfile import write
 from tqdm import tqdm
 
+from matplotlib import pyplot as plt
+from librosa import  display
+
 def synthesize():
     # Load data
     L = load_data("synthesize")
@@ -58,6 +61,7 @@ def synthesize():
         print(Y)
         for i, mag in enumerate(Y):
             print("Teste Working on file", i+1)
+            
         
         # Get magnitude
         Z = sess.run(g.Z, {g.Y: Y})
@@ -68,6 +72,24 @@ def synthesize():
             print("Working on file", i+1)
             wav = spectrogram2wav(mag)
             write(hp.sampledir + "/{}.wav".format(i+1), hp.sr, wav)
+            np.save( hp.sampledir + "/{}.png".format(i+1),mag )#save mag 
+            # transpose
+            mag = mag.T
+
+            # de-noramlize
+            mag = (np.clip(mag, 0, 1) * hp.max_db) - hp.max_db + hp.ref_db
+            # to amplitude
+            mag = np.power(10.0, mag * 0.05)
+            #save spectrogram stft image
+            mag = mag**hp.power
+            display.specshow(librosa.amplitude_to_db(mag,ref=np.max), y_axis='log', x_axis='time')
+            plt.title('Espectrograma STFT')
+            plt.colorbar(format='%+2.0f dB')
+            plt.tight_layout()
+            #plt.savefig(hp.sampledir + "/{}.png".format(i+1))
+            plt.cla()   # Clear axis
+            plt.clf()
+
 
 if __name__ == '__main__':
     synthesize()

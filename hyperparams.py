@@ -29,19 +29,22 @@ class Hyperparams:
     attention_win_size = 3
 
     # data
-    data = "/data/private/voice/LJSpeech-1.1"
+    data = "/home/edresson/Projetos-PTI/TCC/text-dataset/App/Base/TTS-Portuguese/"
     # data = "/data/private/voice/kate"
     test_data = 'harvard_sentences.txt'
     language = 'pt' # or 'eng'
-    #vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS. #english
-    vocab = "PE abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
+    phoneme = True
     
+    #vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS. #english
+    vocab = "PE abcdefghijklmnopqrstuvwxyzçãàáâêéíóôõúû"#abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
+    #portugues falta acento no a :"abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?"
+    phoneme_vocab = "ˈoʧi.tulʊʤɪpaʒnsdk̃eɾvmzgɐ͂ɛxfbɣ,_ɔXqɲʃʎĩẽõhũŋcrɳ"
     max_N = 180 # Maximum number of characters. default:180
     max_T = 210 # Maximum number of mel frames. default:210
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    logdir = "logdir/LJ01"
-    sampledir = 'samples'
+    logdir = "../savedir/logdir/LJ01"
+    sampledir = '../savedir/samples'
     B = 32 # batch size
     num_iterations =10# 2000000
