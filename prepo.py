@@ -33,19 +33,16 @@ def texts_to_phonemes(fpaths,texts):
             transcrito.append(transcription)
             for caracter in transcription:
                 if caracter not in alphabet_list:
-                    print(fpaths[i],word,':',caracter)
                     alphabet_list.append(caracter)
            
         #print('Frase: ',"_".join(words))
         #print('Transcricao: ',"_".join(transcrito))
 
         frase = str(fpaths[i])+'=='+"_".join(transcrito)+'\n'
-        #print(frase)
-
         transcript.write(frase)
 
     alphabet = codecs.open(alpha, 'w', 'utf-8')
-    print(alphabet_list)
+    print('Alfabeto:',alphabet_list)
     for i in alphabet_list:
         alphabet.write(i)
     

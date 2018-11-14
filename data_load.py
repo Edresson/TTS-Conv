@@ -169,10 +169,10 @@ def get_batch():
                 fname = os.path.basename(fpath)
                 fname = fname.decode("utf8")
                 mel = "mels/{}".format(fname.replace("wav", "npy"))
-                world = "worlds/{}".format(fname.replace("wav", "npy"))
+                mags = "mags/{}".format(fname.replace("wav", "npy"))
                 mels = np.load(mel)
-                worlds = np.load(world)
-                return fname, mels, worlds.astype(np.float32)
+                mags = np.load(mags)
+                return fname, mels, mags
 
             fname, mel, mag = tf.py_func(_load_spectrograms, [fpath], [tf.string, tf.float32, tf.float32])
         else:
