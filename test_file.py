@@ -9,7 +9,8 @@ from g2p.g2p import G2PTranscriber
 
 import os
 import codecs
-
+from data_load import text_normalize
+from utils import texts_to_phonemes
 
 def is_valid_file(parser, arg):
     if not os.path.exists(arg):
@@ -24,19 +25,17 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     # Parse command line arguments
     parser.add_argument(
-        '-s', '--separator',
-        dest='separator',
-        required=True,
-        type=str,
-        choices=['silva', 'ceci'],
-        help=u'Select the separator/syllabification algorithm',
-    )
-    parser.add_argument(
         '-f', '--file',
         dest='file',
         required=True,
         help=u'Text file',
         type=lambda x: is_valid_file(parser, x),
+    )
+    parser.add_argument(
+        '-o', '--output',
+        dest='output file',
+        required=True,
+        help=u'output phoneme file',
     )
     args = parser.parse_args()
 
@@ -60,7 +59,7 @@ if __name__ == '__main__':
                 transcrito.append(g2p.transcriber())
            
         #print(" ".join(transcrito))
-        f.write(" ".join(transcrito)+'\n')
+        f.write("_".join(transcrito)+'\n')
     # Close output file
     f.close()
 

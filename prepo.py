@@ -14,15 +14,16 @@ import numpy as np
 import tqdm
 from hyperparams import Hyperparams as hp
 import codecs
-from PETRUS.g2p.g2p import G2PTranscriber
 
 def texts_to_phonemes(fpaths,texts):
+    from PETRUS.g2p.g2p import G2PTranscriber
     transcript = os.path.join(hp.data, 'texts-phoneme.csv')
     alpha=os.path.join(hp.data, 'phoneme-alphabet.csv')
     transcript= codecs.open(transcript, 'w', 'utf-8')
     alphabet_list=[]
     #print('Texts:',texts)
     for i in range(len(texts)):
+        texts[i]=texts[i].replace(',',' , ').replace('?',' ? ')
         words = texts[i].strip().lower().split(' ')
         transcrito = [] 
         for word in words:
@@ -38,7 +39,7 @@ def texts_to_phonemes(fpaths,texts):
         #print('Frase: ',"_".join(words))
         #print('Transcricao: ',"_".join(transcrito))
 
-        frase = str(fpaths[i])+'=='+"_".join(transcrito)+'\n'
+        frase = str(fpaths[i].replace(hp.data,''))+'=='+"_".join(transcrito)+'\n'
         transcript.write(frase)
 
     alphabet = codecs.open(alpha, 'w', 'utf-8')

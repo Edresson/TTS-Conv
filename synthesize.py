@@ -24,7 +24,7 @@ from librosa import  display
 def synthesize():
     # Load data
     L = load_data("synthesize")
-
+    
     # Load graph
     g = Graph(mode="synthesize"); print("Graph loaded")
 

@@ -45,6 +45,7 @@ class Graph:
             self.L = tf.placeholder(tf.int32, shape=(None, None))
             self.mels = tf.placeholder(tf.float32, shape=(None, None, hp.n_mels))
             self.prev_max_attentions = tf.placeholder(tf.int32, shape=(None,))
+            self.gts = tf.convert_to_tensor(guided_attention())
 
         if num==1 or (not training):
             with tf.variable_scope("Text2Mel"):
@@ -88,15 +89,15 @@ class Graph:
                 # mel binary divergence loss
                 self.loss_bd1 = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.Y_logits, labels=self.mels))
 
-                # guided_attention loss
+                '''# guided_attention loss
                 self.A = tf.pad(self.alignments, [(0, 0), (0, hp.max_N), (0, hp.max_T)], mode="CONSTANT", constant_values=-1.)[:, :hp.max_N, :hp.max_T]
                 self.attention_masks = tf.to_float(tf.not_equal(self.A, -1))
                 self.loss_att = tf.reduce_sum(tf.abs(self.A * self.gts) * self.attention_masks)
                 self.mask_sum = tf.reduce_sum(self.attention_masks)
-                self.loss_att /= self.mask_sum
+                self.loss_att /= self.mask_sum'''
 
                 # total loss
-                self.loss = self.loss_mels + self.loss_bd1 + self.loss_att
+                self.loss = self.loss_mels + self.loss_bd1 #+ self.loss_att
 
                 tf.summary.scalar('train/loss_mels', self.loss_mels)
                 tf.summary.scalar('train/loss_bd1', self.loss_bd1)
@@ -143,14 +144,17 @@ if __name__ == '__main__':
 
     logdir = hp.logdir + "-" + str(num)
     sv = tf.train.Supervisor(logdir=logdir, save_model_secs=0, global_step=g.global_step)
+    sv.saver._max_to_keep=1000 # set max number checkpoint is save
+
     with sv.managed_session() as sess:
         while 1:
-            for _ in tqdm(range(g.num_batch), total=g.num_batch, ncols=70, leave=False, unit='b'):
+            for _ in range(g.num_batch):
                 gs, _ = sess.run([g.global_step, g.train_op])
 
                 # Write checkpoint files at every 1k steps
                 if gs % 1000 == 0:
                     sv.saver.save(sess, logdir + '/model_gs_{}'.format(str(gs // 1000).zfill(3) + "k"))
+                    print("processados "+str(gs)+" de "+str(hp.num_iterations))
 
                     if num==1:
                         # plot alignment
@@ -158,6 +162,7 @@ if __name__ == '__main__':
                         plot_alignment(alignments[0], str(gs // 1000).zfill(3) + "k", logdir)
 
                 # break
-                if gs > hp.num_iterations: break
+                if gs > hp.num_iterations: 
+                    break
 
     print("Done")

@@ -5,12 +5,10 @@ from __future__ import unicode_literals
 
 from argparse import ArgumentParser
 
-from g2p.g2p import G2PTranscriber
-
 import os
 import codecs
-
-
+from data_load import text_normalize
+from PETRUS.g2p.g2p import G2PTranscriber
 def is_valid_file(parser, arg):
     if not os.path.exists(arg):
         parser.error("the file \"%s\" does not exist!" % arg)
@@ -24,28 +22,36 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     # Parse command line arguments
     parser.add_argument(
-        '-s', '--separator',
-        dest='separator',
-        required=True,
-        type=str,
-        choices=['silva', 'ceci'],
-        help=u'Select the separator/syllabification algorithm',
-    )
-    parser.add_argument(
         '-f', '--file',
         dest='file',
         required=True,
         help=u'Text file',
         type=lambda x: is_valid_file(parser, x),
     )
+    parser.add_argument(
+        '-o', '--output',
+        dest='output',
+        required=True,
+        help=u'output phoneme file',
+    )
+    parser.add_argument(
+        '-s', '--separator',
+        dest='separator',
+        required=False,
+        default ='. ',
+        help=u"separator between identify and text default: ' ' ",
+    )
     args = parser.parse_args()
 
     # Open output file
-    f = codecs.open('output.txt', 'w', 'utf-8')
+    f = codecs.open(args.output, 'w', 'utf-8')
     # Iterate input file
     for line in args.file.readlines():
         # Get input word
-        directory,line= line.split('==', 1)
+        print('separator',args.separator)
+        identify,line= line.split(args.separator, 1)
+        line = text_normalize(line).replace(',',' , ').replace('?',' ? ')
+        print('linha:',line)
         words = line.strip().lower().split(' ')
         transcrito = [] 
         for word in words:
@@ -55,13 +61,14 @@ if __name__ == '__main__':
             # Write file
             #print(g2p.transcriber())
             try:
-                transcrito.append(directory+'=='+str(g2p.transcriber()[0]))
+                transcription = g2p.transcriber()
+                transcrito.append(str(transcription))
             except:
                 transcrito.append(g2p.transcriber())
            
-        #print(" ".join(transcrito))
-        f.write(" ".join(transcrito)+'\n')
+        print(identify+'. '+"_".join(transcrito))
+        f.write(identify+'. '+"_".join(transcrito)+'\n')
     # Close output file
     f.close()
 
-    print('\nSuccess!!! Open the "output.txt" file to see the result.\n')
+    print('\nSuccess!!! Open the "',args.output,'" file to see the result.\n')
