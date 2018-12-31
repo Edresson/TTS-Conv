@@ -89,12 +89,12 @@ class Graph:
                 # mel binary divergence loss
                 self.loss_bd1 = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.Y_logits, labels=self.mels))
 
-                '''# guided_attention loss
+                # guided_attention loss
                 self.A = tf.pad(self.alignments, [(0, 0), (0, hp.max_N), (0, hp.max_T)], mode="CONSTANT", constant_values=-1.)[:, :hp.max_N, :hp.max_T]
                 self.attention_masks = tf.to_float(tf.not_equal(self.A, -1))
                 self.loss_att = tf.reduce_sum(tf.abs(self.A * self.gts) * self.attention_masks)
                 self.mask_sum = tf.reduce_sum(self.attention_masks)
-                self.loss_att /= self.mask_sum'''
+                self.loss_att /= self.mask_sum
 
                 # total loss
                 self.loss = self.loss_mels + self.loss_bd1 #+ self.loss_att
