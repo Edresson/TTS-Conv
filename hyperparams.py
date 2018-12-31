@@ -31,10 +31,15 @@ class Hyperparams:
     # data
     data = "/home/edresson/Projetos-PTI/TCC/text-dataset/App/Base/TTS-Portuguese/"
     # data = "/data/private/voice/kate"
-    test_data = 'harvard_sentences.txt'
     language = 'pt' # or 'eng'
     phoneme = True
-    
+    if phoneme == False and language == 'pt':
+        test_data = 'phonetically-balanced-sentences.txt'
+    elif phoneme == True and language == 'pt':
+        test_data = 'phonetically-balanced-sentences-phoneme.txt'
+    else:
+        test_data = 'harvard_setences.txt'
+
     #vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS. #english
     vocab = "PE abcdefghijklmnopqrstuvwxyzçãàáâêéíóôõúû"#abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
     #portugues falta acento no a :"abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?"
