@@ -32,7 +32,7 @@ class Hyperparams:
     data = "/home/edresson/Projetos-PTI/TCC/text-dataset/App/Base/TTS-Portuguese/"
     # data = "/data/private/voice/kate"
     language = 'pt' # or 'eng'
-    phoneme = True
+    phoneme = False
     if phoneme == False and language == 'pt':
         test_data = 'phonetically-balanced-sentences.txt'
     elif phoneme == True and language == 'pt':
