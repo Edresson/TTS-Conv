@@ -72,7 +72,7 @@ def load_data(mode="train"):
                 for line in lines[:3054]+lines[3074:]:
                     #print(line)
                     fname,text = line.strip().split("==")
-
+                    
                     fpath = os.path.join(hp.data, "wavs", fname.split("/")[1])
                     fpaths.append(fpath)
                     #print('Antes da normalizacao',text)
@@ -90,8 +90,10 @@ def load_data(mode="train"):
                 fpaths, text_lengths, texts = [], [], []
                 transcript = os.path.join(hp.data, 'texts.csv')
                 lines = codecs.open(transcript, 'r', 'utf-8').readlines()
-                for line in lines[:3054]+lines[3074:]:
+                for line in lines:
                     fname,text = line.strip().split("==")
+                    if int(fname.split('-')[1].replace('.wav','')) >= 5655 and int(fname.split('-')[1].replace('.wav',''))<=5674:
+                        continue
 
                     fpath = os.path.join(hp.data, "wavs", fname.split('/')[1])
                     fpaths.append(fpath)
@@ -154,7 +156,9 @@ def load_data(mode="train"):
                 lines = codecs.open(transcript, 'r', 'utf-8').readlines()
                 for line in lines:
                     fname,text = line.strip().split("==")
-
+                    if int(fname.split('-')[1].replace('.wav','')) >= 5655 and int(fname.split('-')[1].replace('.wav',''))<=5674:
+                        continue
+                    
                     fpath = os.path.join(hp.data, "wavs", fname.split('/')[1])
                     fpaths.append(fpath)
                     #print('Antes da normalizacao',text)
@@ -194,16 +198,19 @@ def load_data(mode="train"):
                 fpaths, text_lengths, texts,sents = [], [], [],[]
                 transcript = os.path.join(hp.data, 'texts-phoneme.csv')
                 lines = codecs.open(transcript, 'r', 'utf-8').readlines()
-                for line in lines[3054:3074]:# fonetic balance phrases
+                for line in lines:# fonetic balance phrases
                     #print(line)
                     fname,text = line.strip().split("==")
-
-                    fpath = os.path.join(hp.data, "wavs", fname.split("/")[1])
-                    fpaths.append(fpath)
-                    #print('Antes da normalizacao',text)
-                    #print('Antes da normalizacao',text)
-                    sent = text_normalize(text).replace(',',' , ').replace('?',' ? ') + "E"  # E: EOS
-                    sents.append(sent)
+                    if int(fname.split('-')[1].replace('.wav','')) >= 5655 and int(fname.split('-')[1].replace('.wav',''))<=5674:
+                        
+                        fpath = os.path.join(hp.data, "wavs", fname.split("/")[1])
+                        fpaths.append(fpath)
+                        #print('Antes da normalizacao',text)
+                        #print('Antes da normalizacao',text)
+                        sent = text_normalize(text).replace(',',' , ').replace('?',' ? ') + "E"  # E: EOS
+                        sents.append(sent)
+                    else:
+                        continue
                     
                 texts = np.zeros((len(sents), hp.max_N), np.int32)
                 for i, sent in enumerate(sents):
@@ -270,6 +277,7 @@ def get_batch():
 
         if hp.prepro:
             def _load_spectrograms(fpath):
+                
                 fname = os.path.basename(fpath)
                 fname = fname.decode("utf8")
                 mel = "mels/{}".format(fname.replace("wav", "npy"))
