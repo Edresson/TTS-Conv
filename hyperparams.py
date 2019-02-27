@@ -7,10 +7,11 @@ class Hyperparams:
     # signal processing
     sr = 22050  # Sampling rate.
     n_fft = 2048  # fft points (samples)
-    frame_shift = 0.0125  # seconds
-    frame_length = 0.05  # seconds
-    hop_length = int(sr * frame_shift)  # samples. =276.
-    win_length = int(sr * frame_length)  # samples. =1102.
+    frame_shift = 0.011609 # seconds
+    frame_length = 0.04643  # seconds
+    hop_length = 256 #int(sample_rate * frame_shift)  # samples. =256.
+    hop_size = hop_length 
+    win_length = 1024#int(sample_rate * frame_length)  # samples. =1024.
     n_mels = 80  # Number of Mel banks to generate
     power = 1.5  # Exponent for amplifying the predicted magnitude
     n_iter = 50  # Number of inversion iterations
@@ -29,7 +30,7 @@ class Hyperparams:
     attention_win_size = 3
 
     # data
-    data = "/home/edresson/Projetos-PTI/TCC/text-dataset/App/Base/TTS-Portuguese/"
+    data = "../TTS-Portuguese/"
     # data = "/data/private/voice/kate"
     language = 'pt' # or 'eng'
     phoneme = False

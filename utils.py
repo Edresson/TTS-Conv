@@ -226,9 +226,9 @@ def load_spectrograms(fpath):
     # Marginal padding for reduction shape sync.
     num_paddings = hp.r - (t % hp.r) if t % hp.r != 0 else 0
     mel = np.pad(mel, [[0, num_paddings], [0, 0]], mode="constant")
-    mag = np.pad(mag, [[0, num_paddings], [0, 0]], mode="constant")
+    
 
     # Reduction
-    mel = mel[::hp.r, :]
-    return fname, mel, mag
+    re_mel = mel[::hp.r, :]
+    return fname, re_mel, mel
 

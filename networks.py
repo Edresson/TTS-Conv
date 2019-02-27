@@ -217,7 +217,7 @@ def SSRN(Y, training=True):
       Y: Melspectrogram Predictions. (B, T/r, n_mels)
 
     Returns:
-      Z: Spectrogram Predictions. (B, T, 1+n_fft/2)
+      Z: Full MelSpectrogram Predictions. (B, T, n_mels)
     '''
 
     i = 1 # number of layers
@@ -267,7 +267,7 @@ def SSRN(Y, training=True):
                         scope="HC_{}".format(i)); i += 1
     # -> (B, T, 1+n_fft/2)
     tensor = conv1d(tensor,
-                    filters=1+hp.n_fft//2,
+                    filters=hp.n_mels,
                     size=1,
                     rate=1,
                     dropout_rate=hp.dropout_rate,
@@ -291,82 +291,3 @@ def SSRN(Y, training=True):
     Z = tf.nn.sigmoid(logits)
     return logits, Z
 
-def Mel2World(Y, training=True):
-    '''
-    Args:
-      Y: Melspectrogram Predictions. (B, T/r, n_mels)
-
-    Returns:
-      W: Concatenated  World Vocoder Features. (B, ~9.9*T, 3+n_fft/2)
-    '''
-
-    i = 1 # number of layers
-
-    # -> (B, T/r, c) 
-    tensor = conv1d(Y,
-                    filters=hp.c,
-                    size=1,
-                    rate=1,
-                    dropout_rate=hp.dropout_rate,
-                    training=training,
-                    scope="C_{}".format(i)); i += 1
-    for j in range(2):
-        tensor = hc(tensor,
-                      size=3,
-                      rate=3**j,
-                      dropout_rate=hp.dropout_rate,
-                      training=training,
-                      scope="HC_{}".format(i)); i += 1
-    for _ in range(2):
-        # -> (B, T/2, c) -> (B, T, c)
-        tensor = conv1d_transpose(tensor,
-                                  scope="D_{}".format(i),
-                                  dropout_rate=hp.dropout_rate,
-                                  training=training,); i += 1
-        for j in range(2):
-            tensor = hc(tensor,
-                            size=3,
-                            rate=3**j,
-                            dropout_rate=hp.dropout_rate,
-                            training=training,
-                            scope="HC_{}".format(i)); i += 1
-    # -> (B, T, 2*c)
-    tensor = conv1d(tensor,
-                    filters=2*hp.c,
-                    size=1,
-                    rate=1,
-                    dropout_rate=hp.dropout_rate,
-                    training=training,
-                    scope="C_{}".format(i)); i += 1
-    for _ in range(2):
-        tensor = hc(tensor,
-                        size=3,
-                        rate=1,
-                        dropout_rate=hp.dropout_rate,
-                        training=training,
-                        scope="HC_{}".format(i)); i += 1
-    # -> (B, T, 1+n_fft/2)
-    tensor = conv1d(tensor,
-                    filters=3+hp.n_fft//2,
-                    size=1,
-                    rate=1,
-                    dropout_rate=hp.dropout_rate,
-                    training=training,
-                    scope="C_{}".format(i)); i += 1
-
-    for _ in range(2):
-        tensor = conv1d(tensor,
-                        size=1,
-                        rate=1,
-                        dropout_rate=hp.dropout_rate,
-                        activation_fn=tf.nn.relu,
-                        training=training,
-                        scope="C_{}".format(i)); i += 1
-    logits = conv1d(tensor,
-               size=1,
-               rate=1,
-               dropout_rate=hp.dropout_rate,
-               training=training,
-               scope="C_{}".format(i))
-    W = tf.nn.sigmoid(logits)
-    return logits, W
