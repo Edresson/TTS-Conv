@@ -68,3 +68,4 @@ for fpath in tqdm.tqdm(fpaths):
         np.save("mags/{}".format(fname.replace("wav", "npy")), mag)
     except:
         print(' skip file: ',fpath)
+        continue
