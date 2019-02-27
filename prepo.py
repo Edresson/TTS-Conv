@@ -57,7 +57,7 @@ if hp.phoneme == True:
     if hp.language =='pt':
         texts_to_phonemes(fpaths,texts)
 
-for fpath in tqdm.tqdm(fpaths):
+for fpath in fpaths:
     try:
         
         fname, mel, mag = load_spectrograms(fpath)
