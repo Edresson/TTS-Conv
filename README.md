@@ -12,10 +12,6 @@
 ## Data
 
 I train Portuguese models with <p> 1. [TTS-Portuguese Corpus]() <br/>
-DCTTS
-LJ Speech Dataset is recently widely used as a benchmark dataset in the TTS task because it is publicly available, and itDCTTS has 24 hours of reasonable quality samples.
-Nick's and Kate's audiobooks are additionally used to see if the model can learn even with less data, variable speech samples. They are 18 hours and 5 hours long, respectively. Finally, KSS Dataset is a Korean single speaker speech dataset that lasts more than 12 hours.
-
 
 ## Training
   * STEP 0. Download [TTS-Portuguese Corpus]() or prepare your own data.
@@ -49,8 +45,7 @@ I generate speech samples based on  [phonetically balanced sentences](https://re
 
 A notebook supposed to be executed on https://colab.research.google.com is available:
 
-- [DCTTS Text demo](https://colab.research.google.com/drive/1GwC1hp-gbuNC-_fk3Bm7k2kj6kG6SRsz)
-https://colab.research.google.com/drive/1GwC1hp-gbuNC-_fk3Bm7k2kj6kG6SRsz
+- [DCTTS Text demo](https://colab.research.google.com/drive/1GwC1hp-gbuNC-_fk3Bm7k2kj6kG6SRsz
 
 
 ## Pretrained Model for Models
