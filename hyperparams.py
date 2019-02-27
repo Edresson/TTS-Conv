@@ -52,5 +52,5 @@ class Hyperparams:
     lr = 0.001 # Initial learning rate.
     logdir = "../savedir/logdir/LJ01"
     sampledir = '../savedir/samples'
-    B = 32 # batch size
-    num_iterations =10# 2000000
+    B = 10 # batch size
+    num_iterations = 2000000
