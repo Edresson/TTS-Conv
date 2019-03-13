@@ -11,6 +11,7 @@ from tqdm import tqdm
 from librosa import  display
 from IPython.display import Audio
 import os
+import codecs
 
 # Load graph
 g = Graph(mode="synthesize"); print("Graph loaded")
