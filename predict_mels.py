@@ -31,7 +31,7 @@ saver2.restore(sess,tf.train.latest_checkpoint(hp.logdir + "-2"))
 print("SSRN Restored!")
 transcript = os.path.join(hp.data, 'texts.csv')
 lines = codecs.open(transcript, 'r', 'utf-8').readlines()
-os.makedirs('mels', exist_ok=True)
+os.makedirs('mels_ob', exist_ok=True)
 os.makedirs('mels_test', exist_ok=True) 
 char2idx, idx2char = load_vocab()
                
@@ -39,7 +39,7 @@ for i in range(len(lines)):
     try:
         line = lines[i]
         print(line)
-        out = 'mels'
+        out = 'mels_ob'
         fname,text = line.strip().split("==")
         file_id = '{:d}'.format(i).zfill(5)
         file_name = os.path.basename(fname)
