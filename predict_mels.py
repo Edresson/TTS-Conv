@@ -36,6 +36,7 @@ os.makedirs('mels_test', exist_ok=True)
 char2idx, idx2char = load_vocab()
                
 for i in range(len(lines)):
+    try:
         line = lines[i]
         print(line)
         out = 'mels'
@@ -84,6 +85,7 @@ for i in range(len(lines)):
             mel = mel.T
             np.save(os.path.join(out,file_id+".npy"), mel)
 
-
+    except:
+        continue
 
 
