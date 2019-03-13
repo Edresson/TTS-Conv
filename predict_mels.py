@@ -29,7 +29,7 @@ var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'SSRN') + tf.get_
 saver2 = tf.train.Saver(var_list=var_list)
 saver2.restore(sess, os.path.join(tf.train.latest_checkpoint(hp.logdir + "-2"))
 print("SSRN Restored!")
-
+               
 transcript = os.path.join(hp.data, 'texts.csv')
 lines = codecs.open(transcript, 'r', 'utf-8').readlines()
 os.makedirs('mels', exist_ok=True)
