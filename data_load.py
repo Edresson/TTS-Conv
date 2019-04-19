@@ -74,7 +74,7 @@ def load_data(mode="train"):
                     fname,text = line.strip().split("==")
                     file_name = os.path.basename(fname)
                     if int(file_name.split('-')[1].replace('.wav','')) >= 5655 and int(file_name.split('-')[1].replace('.wav',''))<=5674:
-				continue
+                        continue
                     fpath = os.path.join(hp.data, "wavs", fname.split("/")[1])
                     fpaths.append(fpath)
                     #print('Antes da normalizacao',text)
@@ -96,7 +96,7 @@ def load_data(mode="train"):
                     fname,text = line.strip().split("==")
                     file_name = os.path.basename(fname)
                     if int(file_name.split('-')[1].replace('.wav','')) >= 5655 and int(file_name.split('-')[1].replace('.wav',''))<=5674:
-				continue
+                        continue
                     fpath = os.path.join(hp.data, "wavs", fname.split('/')[1])
                     fpaths.append(fpath)
                     #print('Antes da normalizacao',text)
