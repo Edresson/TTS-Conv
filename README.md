@@ -11,7 +11,7 @@
 
 ## Data
 
-I train Portuguese models with <p> 1. [TTS-Portuguese Corpus]() <br/>
+I train Portuguese models with <p> 1. [TTS-Portuguese Corpus](https://github.com/Edresson/TTS-Portuguese-Corpus) <br/>
 
 ## Training
   * STEP 0. Download [TTS-Portuguese Corpus](https://github.com/Edresson/TTS-Portuguese-Corpus) or prepare your own data.
