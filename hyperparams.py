@@ -29,7 +29,7 @@ class Hyperparams:
     attention_win_size = 3
 
     # data
-    data = "/home/edresson/Projetos-PTI/TCC/text-dataset/App/Base/TTS-Portuguese/"
+    data = "../TTS-Portuguese/"
     # data = "/data/private/voice/kate"
     language = 'pt' # or 'eng'
     phoneme = False
