@@ -17,6 +17,49 @@ from tqdm import tqdm
 from matplotlib import pyplot as plt
 from librosa import  display
 
+
+
+frases=["A inauguração da vila é quarta ou quinta-feira",
+        "Vote se você tiver o título de eleitor",
+        "Hoje é fundamental encontrar a razão da existência humana",
+        "A temperatura é mais amena à noite",
+        "Em muitas cidades a população está diminuindo.",
+        "Nunca se deve ficar em cima do morro",
+        "Para as pessoas estranhas o panorama é desolador",
+        "É bom te ver colhendo flores menino",
+        "Eu finjo me banhar num lago ao amanhecer",
+        "Sua sensibilidade mostrará o caminho",
+        "A Amazônia é a reserva ecológica do globo",
+        "O ministério mudou demais com a eleição",
+        "Novas metas surgem na informática",
+        "O capital de uma empresa depende de sua produção",
+        "Se não fosse ela tudo teria sido melhor",
+        "A principal personagem no filme é uma gueixa",
+        "Espere seu amigo em casa",
+        "A juventude tinha que revolucionar a escola",
+        " A cantora terá quatro meses para ensaiar seu canto",
+        "Esse tema foi falado no congresso."]
+
+
+import os
+from matplotlib import pylab as plt
+
+def plot_alignment_with_text(alignment,text, info=None):
+    fig, ax = plt.subplots(figsize=(16, 10))
+    im = ax.imshow(alignment, aspect='auto', origin='lower', interpolation=None)
+    fig.colorbar(im, ax=ax)
+    xlabel = 'Decoder timestep'
+    if info is not None:
+        xlabel += '\n\n' + info
+    plt.xlabel(xlabel,fontsize = 'x-large')
+    plt.ylabel('Encoder timestep',fontsize = 'x-large')
+    #plt.yticks(range(len(text)), list(text.upper()),fontsize ='xx-large' )
+    ax.set_yticks(range(len(text)))
+    ax.set_yticklabels(list(text.upper()),fontsize ='medium')
+    plt.tight_layout()
+    return fig
+
+
 def synthesize():
     # Load data
     L = load_data("synthesize")
@@ -44,7 +87,7 @@ def synthesize():
         Y = np.zeros((len(L), hp.max_T, hp.n_mels), np.float32)
         prev_max_attentions = np.zeros((len(L),), np.int32)
         for j in tqdm(range(hp.max_T)):
-            _gs, _Y, _max_attentions, _alignments = \
+            _gs, _Y, _max_attentions, alignments = \
                 sess.run([g.global_step, g.Y, g.max_attentions, g.alignments],
                          {g.L: L,
                           g.mels: Y,
@@ -52,9 +95,12 @@ def synthesize():
             Y[:, j, :] = _Y[:, j, :]
             prev_max_attentions = _max_attentions[:, j]
 
-        print(g.Z)
-        print(g.Y)
-        print(Y)
+
+        #plot aligments
+        for i,al in enumerate(alignments):
+            fig = plot_alignment_with_text(al,frases[i])
+            fig.savefig(os.path.join(hp.sampledir,'align_'+str(i+1)+'_val.png'))
+
         for i, mag in enumerate(Y):
             print("Teste Working on file", i+1)
             

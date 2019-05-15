@@ -38,7 +38,7 @@ class Graph:
         ## mags: Magnitude. (B, T, n_fft//2+1) float32
         if mode=="train":
             self.L, self.mels, self.mags, self.fnames, self.num_batch = get_batch()
-            print(self.L, self.mels, self.mags, self.fnames, self.num_batch)
+            #print(self.L, self.mels, self.mags, self.fnames, self.num_batch)
             self.prev_max_attentions = tf.ones(shape=(hp.B,), dtype=tf.int32)
             self.gts = tf.convert_to_tensor(guided_attention())
         else:  # Synthesize

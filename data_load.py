@@ -25,7 +25,7 @@ def text_normalize(text):
         accents = ('COMBINING ACUTE ACCENT', 'COMBINING GRAVE ACCENT') #portuguese
         chars = [c for c in unicodedata.normalize('NFD', text) if c not in accents]
         text = unicodedata.normalize('NFC', ''.join(chars))# Strip accent
-        print(text)
+        
     else:
         text = ''.join(char for char in unicodedata.normalize('NFD', text)
                            if unicodedata.category(char) != 'Mn') # Strip accent
