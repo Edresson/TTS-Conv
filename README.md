@@ -11,10 +11,10 @@
 
 ## Data
 
-I train Portuguese models with <p> 1. [TTS-Portuguese Corpus]() <br/>
+I train Portuguese models with <p> 1. [TTS-Portuguese Corpus](https://github.com/Edresson/TTS-Portuguese-Corpus) <br/>
 
 ## Training
-  * STEP 0. Download [TTS-Portuguese Corpus]() or prepare your own data.
+  * STEP 0. Download [TTS-Portuguese Corpus](https://github.com/Edresson/TTS-Portuguese-Corpus) or prepare your own data.
   * STEP 1. Run `python prepro.py`.
   * STEP 2. Run `python train.py 1` for training Text2Mel.
   * STEP 3. Run `python train.py 2` for training SSRN.
