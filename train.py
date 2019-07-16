@@ -143,10 +143,21 @@ if __name__ == '__main__':
     g = Graph(num=num);print("Training Graph loaded")
 
     logdir = hp.logdir + "-" + str(num)
+
+
+    if(hp.TL):#transfer learning ignore embedding layer in load weights
+        variables_to_restore = tf.contrib.framework.get_variables_to_restore(exclude=['embedding/lookup_table:0','embedding/lookup_table/Adam:0','embedding/lookup_table/Adam_1:0'])
+        saver = tf.train.Saver(var_list=variables_to_restore)
+
+    print('variaveis:',tf.contrib.framework.get_variables_to_restore())
+    
+    
     sv = tf.train.Supervisor(logdir=logdir, save_model_secs=0, global_step=g.global_step)
     sv.saver._max_to_keep=1000 # set max number checkpoint is save
 
     with sv.managed_session() as sess:
+        if(hp.TL):
+            saver.restore(sess, tf.train.latest_checkpoint(hp.logdir+"-EN")) # restore english weights
         while 1:
             for _ in range(g.num_batch):
                 gs, _ = sess.run([g.global_step, g.train_op])
