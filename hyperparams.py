@@ -41,7 +41,22 @@ class Hyperparams:
         test_data = 'harvard_setences.txt'
 
     #vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS. #english
-    vocab = "PE abcdefghijklmnopqrstuvwxyzçãàáâêéíóôõúû"#abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
+    #vocab = "PE abcdefghijklmnopqrstuvwxyzçãàáâêéíóôõúû"#abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
+    vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS.
+    '''map:
+    ç-> 'c
+    ã -> 'a
+    á -> 'b
+    â -> 'c
+    ê -> 'e
+    é -> 'd
+    í -> 'i
+    ó-> 'o
+    ô -> 'f
+    õ -> 'g
+    ú -> 'u
+    û -> 'h
+    '''
     #portugues falta acento no a :"abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?"
     phoneme_vocab = "ˈoʧi.tulʊʤɪpaʒnsdk̃eɾvmzgɐ͂ɛxfbɣ,_ɔXqɲʃʎĩẽõhũŋcrɳ E"
     max_N = 180 # Maximum number of characters. default:180
