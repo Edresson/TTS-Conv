@@ -67,4 +67,4 @@ class Hyperparams:
     logdir = "../savedir/logdir/LJ01"
     sampledir = '../savedir/samples'
     B = 5 # batch size
-    num_iterations =10# 2000000
+    num_iterations =2000000
