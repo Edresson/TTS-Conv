@@ -15,6 +15,10 @@ import tqdm
 from hyperparams import Hyperparams as hp
 import codecs
 
+from utils import AudioProcessor,load_config
+
+
+
 def texts_to_phonemes(fpaths,texts):
     from PETRUS.g2p.g2p import G2PTranscriber
     transcript = os.path.join(hp.data, 'texts-phoneme.csv')
@@ -53,19 +57,24 @@ def texts_to_phonemes(fpaths,texts):
 # Load data
 fpaths, texts = load_data(mode="prepo") # list
 
+c = load_config('config.json')
+
+ap = AudioProcessor(**c.audio)
+
+
 if hp.phoneme == True:
     if hp.language =='pt':
         texts_to_phonemes(fpaths,texts)
 
-for fpath in fpaths:
-    try:
-        
-        fname, mel, mag = load_spectrograms(fpath)
-        if not os.path.exists("mels"): os.mkdir("mels")
-        if not os.path.exists("mags"): os.mkdir("mags")
+for fpath in tqdm.tqdm(fpaths):
+    x = ap.load_wav(fpath, ap.sample_rate)
+    fname = os.path.basename(fpath)
+    mel = ap.melspectrogram(x.astype('float32')).astype('float32')
+    # Reduction
+    re_mel = mel[::hp.r, :]
 
-        np.save("mels/{}".format(fname.replace("wav", "npy")), mel)
-        np.save("mags/{}".format(fname.replace("wav", "npy")), mag)
-    except:
-        print(' skip file: ',fpath)
-        continue
+    if not os.path.exists("mels"): os.mkdir("mels")
+    if not os.path.exists("mags"): os.mkdir("mags")
+
+    np.save("mels/{}".format(fname.replace("wav", "npy")), re_mel)
+    np.save("mags/{}".format(fname.replace("wav", "npy")), mel)
