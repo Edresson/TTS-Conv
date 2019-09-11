@@ -70,6 +70,10 @@ for fpath in tqdm.tqdm(fpaths):
     x = ap.load_wav(fpath, ap.sample_rate)
     fname = os.path.basename(fpath)
     mel = ap.melspectrogram(x.astype('float32')).astype('float32')
+    # Marginal padding for reduction shape sync.
+    num_paddings = hp.r - (t % hp.r) if t % hp.r != 0 else 0
+    mel = np.pad(mel, [[0, num_paddings], [0, 0]], mode="constant")
+    
     # Reduction
     re_mel = mel[::hp.r, :]
 
