@@ -33,7 +33,7 @@ class Hyperparams:
     data = "../TTS-Portuguese/"
     # data = "/data/private/voice/kate"
     language = 'pt-br' # or 'eng'
-    phoneme = False
+    phoneme = True
     if phoneme == False and language == 'pt-br':
         test_data = 'phonetically-balanced-sentences.txt'
     elif phoneme == True and language == 'pt-br':
