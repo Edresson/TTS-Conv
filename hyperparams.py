@@ -60,7 +60,7 @@ class Hyperparams:
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    logdir = "../savedir/logdir/LJ01"
+    logdir = "../savedir/logdir-dctts-wavernn-with-phoneme/LJ01"
     sampledir = '../savedir/samples'
     B = 10 # batch size
     num_iterations = 2000000
