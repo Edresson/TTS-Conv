@@ -54,7 +54,8 @@ class Hyperparams:
     _diacrilics = 'ɚ˞ɫ'
     _phonemes = sorted(list(_vowels + _non_pulmonic_consonants + _pulmonic_consonants + _suprasegmentals + _other_symbols + _diacrilics))
     _phonemes = sorted(list(set(_phonemes)))
-    phoneme_vocab = ["P","E"]+_phonemes+list(_phonemes) + list(phoneme_punctuations)
+    phoneme_vocab_list = ["P","E"]+_phonemes+list(_phonemes) + list(phoneme_punctuations)
+    phoneme_vocab = ''.join(phoneme_vocab_list)
     max_N = 180 # Maximum number of characters. default:180
     max_T = 210 # Maximum number of mel frames. default:210
 
