@@ -67,6 +67,7 @@ def texts_to_phonemes(fpaths,texts):
     #print('Texts:',texts)
     for i in range(len(texts)):
         transcrito = phrase_to_phoneme(texts[i],hp.language)
+        print(texts[i],'==',transcrito)
         frase = str(fpaths[i].replace(hp.data,''))+'=='+transcrito+'\n'
         transcript.write(frase)
     

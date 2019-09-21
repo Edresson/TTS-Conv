@@ -21,7 +21,7 @@ def load_vocab():
     return char2idx, idx2char
 
 def text_normalize(text):
-    if hp.language == 'pt':
+    if hp.language == 'pt-br':
         accents = ('COMBINING ACUTE ACCENT', 'COMBINING GRAVE ACCENT') #portuguese
         chars = [c for c in unicodedata.normalize('NFD', text) if c not in accents]
         text = unicodedata.normalize('NFC', ''.join(chars))# Strip accent
@@ -72,7 +72,8 @@ def load_data(mode="train"):
                 for line in lines[:3054]+lines[3074:]:
                     #print(line)
                     fname,text = line.strip().split("==")
-                    
+                    if int(fname.split('-')[1].replace('.wav','')) >= 5655 and int(fname.split('-')[1].replace('.wav',''))<=5674:
+                        continue
                     fpath = os.path.join(hp.data, "wavs", fname.split("/")[1])
                     fpaths.append(fpath)
                     #print('Antes da normalizacao',text)
