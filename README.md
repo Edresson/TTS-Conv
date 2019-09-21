@@ -8,7 +8,7 @@
   * tqdm
   * matplotlib
   * scipy
-
+  * Phonemizer (pip install git+https://github.com/bootphon/phonemizer@master)
 ## Data
 
 I train Portuguese models with <p> 1. [TTS-Portuguese Corpus]() <br/>

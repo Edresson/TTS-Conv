@@ -1,6 +1,6 @@
 {
-    "model_name": "TTS-Portuguese",
-    "model_description": "Added support for the dataset TTS-Portuguese Corpus and adjusted hyperparametre for the convergence of the model",
+    "model_name": "DCTTS with TTS-Portuguese ",
+    "model_description": "",
 
     "audio":{
         "audio_processor": "audio",     // to use dictate different audio processors, if available.
@@ -23,38 +23,5 @@
         "mel_fmin": 0.0,      // minimum freq level for mel-spec. ~50 for male and ~95 for female voices. Tune for dataset!!
         "mel_fmax": 8000.0,        // maximum freq level for mel-spec. Tune for dataset!!
         "do_trim_silence": false  // enable trimming of slience of audio as you load it. LJspeech (false), TWEB (false), Nancy (true)
-    },
-
-    "embedding_size": 256,  // Character embedding vector length. You don't need to change it in general.
-    "text_cleaner": "phoneme_basic_cleaners",
-    "epochs": 1000,         // total number of epochs to train.
-    "lr": 0.0001,            // Initial learning rate. If Noam decay is active, maximum learning rate.
-    "lr_decay": false,      // if true, Noam learning rate decaying is applied through training.
-    "loss_weight": 0.0,     // loss weight to emphasize lower frequencies. Lower frequencies are in general more important for speech signals.
-    "warmup_steps": 4000,   // Noam decay steps to increase the learning rate from 0 to "lr"
-    "windowing": false,      // Enables attention windowing. Used only in eval mode.
-    "memory_size": 5,       // memory queue size used to queue network predictions to feed autoregressive connection. Useful if r < 5. 
-
-    "batch_size": 2,       // Batch size for training. Lower values than 32 might cause hard to learn attention.
-    "eval_batch_size":2,   
-    "r": 2,                 // Number of frames to predict for step.
-    "wd": 0.00001,         // Weight decay weight.
-    "checkpoint": true,     // If true, it saves checkpoints per "save_step"
-    "save_step": 1000,      // Number of training steps expected to save traning stats and checkpoints.
-    "print_step": 50,       // Number of steps to log traning on console.
-    "tb_model_param_stats": false,     // true, plots param stats per layer on tensorboard. Might be memory consuming, but good for debugging. 
-
-    "run_eval": true,
-    "data_path": "../TTS-Portuguese-Corpus/",  // DATASET-RELATED: can overwritten from command argument
-    "meta_file_train": "metadata_train.csv",      // DATASET-RELATED: metafile for training dataloader.
-    "meta_file_val": "metadata_val.csv",    // DATASET-RELATED: metafile for evaluation dataloader.
-    "dataset": "ttsportuguese",      // DATASET-RELATED: one of TTS.dataset.preprocessors depending on your target dataset. Use "tts_cache" for pre-computed dataset by extract_features.py
-    "min_seq_len": 0,       // DATASET-RELATED: minimum text length to use in training
-    "max_seq_len": 450,     // DATASET-RELATED: maximum text length
-    "output_path": "../TTS-Mozilla/Model/tts-portuguese_models/",      // DATASET-RELATED: output path for all training outputs.
-    "num_loader_workers": 8,        // number of training data loader processes. Don't set it too big. 4-8 are good values.
-    "num_val_loader_workers": 4,    // number of evaluation data loader processes.
-    "phoneme_cache_path": "tts-portuguese_pt-br_phonemes",  // phoneme computation is slow, therefore, it caches results in the given folder.
-    "use_phonemes": true,           // use phonemes instead of raw characters. It is suggested for better pronounciation.
-    "phoneme_language": "pt-br"     // depending on your target language, pick one from  https://github.com/bootphon/phonemizer#languages
+    }
 }

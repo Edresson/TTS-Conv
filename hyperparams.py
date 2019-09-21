@@ -32,19 +32,29 @@ class Hyperparams:
     # data
     data = "../TTS-Portuguese/"
     # data = "/data/private/voice/kate"
-    language = 'pt' # or 'eng'
+    language = 'pt-br' # or 'eng'
     phoneme = False
-    if phoneme == False and language == 'pt':
+    if phoneme == False and language == 'pt-br':
         test_data = 'phonetically-balanced-sentences.txt'
-    elif phoneme == True and language == 'pt':
+    elif phoneme == True and language == 'pt-br':
         test_data = 'phonetically-balanced-sentences-phoneme.txt'
     else:
         test_data = 'harvard_setences.txt'
 
     #vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS. #english
-    vocab = "PE abcdefghijklmnopqrstuvwxyzçãàáâêéíóôõúû"#abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
+    vocab = "PE abcdefghijklmnopqrstuvwxyzçãàáâêéíóôõúû!;:,?"#abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?" # P: Padding, E: EOS. #portuguese
+    phoneme_punctuations = '!;:,? '
     #portugues falta acento no a :"abcdefghijklmnopqrstuvwxyzçãõâôêíîúûñáéó.?"
-    phoneme_vocab = "ˈoʧi.tulʊʤɪpaʒnsdk̃eɾvmzgɐ͂ɛxfbɣ,_ɔXqɲʃʎĩẽõhũŋcrɳ E"
+    # Phonemes definition
+    _vowels = 'iyɨʉɯuɪʏʊeøɘəɵɤoɛœɜɞʌɔæɐaɶɑɒᵻ'
+    _non_pulmonic_consonants = 'ʘɓǀɗǃʄǂɠǁʛ'
+    _pulmonic_consonants = 'pbtdʈɖcɟkɡqɢʔɴŋɲɳnɱmʙrʀⱱɾɽɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦɬɮʋɹɻjɰlɭʎʟ'
+    _suprasegmentals = 'ˈˌːˑ'
+    _other_symbols = "ʍwɥʜʢʡɕʑɺɧ'̃' "
+    _diacrilics = 'ɚ˞ɫ'
+    _phonemes = sorted(list(_vowels + _non_pulmonic_consonants + _pulmonic_consonants + _suprasegmentals + _other_symbols + _diacrilics))
+    _phonemes = sorted(list(set(_phonemes)))
+    phoneme_vocab = ["P","E"]+_phonemes+list(_phonemes) + list(phoneme_punctuations)
     max_N = 180 # Maximum number of characters. default:180
     max_T = 210 # Maximum number of mel frames. default:210
 
