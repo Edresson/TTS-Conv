@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-#/usr/bin/python2
-'''
-By kyubyong park. kbpark.linguist@gmail.com.
-https://www.github.com/kyubyong/dc_tts
-'''
-
 from __future__ import print_function
 
 from utils import load_spectrograms
@@ -14,47 +7,68 @@ import numpy as np
 import tqdm
 from hyperparams import Hyperparams as hp
 import codecs
+import re
+import phonemizer
+from phonemizer.phonemize import phonemize
+
+# Regular expression matchinf punctuations, ignoring empty space
+pat = r'['+hp.phoneme_punctuations[:-1]+']+'
+
+import re
+
+def text2phone(text, language):
+    '''
+    Convert graphemes to phonemes.
+    '''
+    seperator = phonemizer.separator.Separator(' |', '', '|')
+    #try:
+    punctuations = re.findall(pat, text)
+    ph = phonemize(text, separator=seperator, strip=False, njobs=1, backend='espeak', language=language)
+    # Replace \n with matching punctuations.
+    ph = ph[:-1].strip() # skip the last empty character
+    # Replace \n with matching punctuations.
+    if punctuations:
+        # if text ends with a punctuation.
+        if text[-1] == punctuations[-1]:
+            for punct in punctuations[:-1]:
+                ph = ph.replace('| |\n', '|'+punct+'| |', 1)
+            try:
+                ph = ph + punctuations[-1]
+            except:
+                print(text)
+        else:
+            for punct in punctuations:
+                ph = ph.replace('| |\n', '|'+punct+'| |', 1)
+    return ph
+
+def phrase_to_phoneme(clean_text, language):
+    phonemes = text2phone(clean_text, language)
+#    print(phonemes.replace('|', ''))
+    if phonemes is None:
+        print("!! After phoneme conversion the result is None. -- {} ".format(clean_text))
+    
+    lista = phonemes.split('||')
+    texto = [x.replace('|','') for x in lista]
+    return ' '.join(texto)
+
 
 def texts_to_phonemes(fpaths,texts):
-    from PETRUS.g2p.g2p import G2PTranscriber
     transcript = os.path.join(hp.data, 'texts-phoneme.csv')
-    alpha=os.path.join(hp.data, 'phoneme-alphabet.csv')
     transcript= codecs.open(transcript, 'w', 'utf-8')
-    alphabet_list=[]
     #print('Texts:',texts)
     for i in range(len(texts)):
-        texts[i]=texts[i].replace(',',' , ').replace('?',' ? ')
-        words = texts[i].strip().lower().split(' ')
-        transcrito = [] 
-        for word in words:
-            #print(word)
-            # Initialize g2p transcriber
-            g2p = G2PTranscriber(word, algorithm='silva')
-            transcription = g2p.transcriber()
-            transcrito.append(transcription)
-            for caracter in transcription:
-                if caracter not in alphabet_list:
-                    alphabet_list.append(caracter)
-           
-        #print('Frase: ',"_".join(words))
-        #print('Transcricao: ',"_".join(transcrito))
-
-        frase = str(fpaths[i].replace(hp.data,''))+'=='+"_".join(transcrito)+'\n'
+        transcrito = phrase_to_phoneme(texts[i],hp.language)
+        #print(texts[i],'==',transcrito)
+        frase = str(fpaths[i].replace(hp.data,''))+'=='+transcrito+'\n'
         transcript.write(frase)
-
-    alphabet = codecs.open(alpha, 'w', 'utf-8')
-    print('Alfabeto:',alphabet_list)
-    for i in alphabet_list:
-        alphabet.write(i)
     
     
     
-
 # Load data
-fpaths, texts = load_data(mode="prepo") # list
+fpaths, texts = load_data(mode="prepo") 
 
 if hp.phoneme == True:
-    if hp.language =='pt':
+    if hp.language =='pt-br':
         texts_to_phonemes(fpaths,texts)
 
 for fpath in tqdm.tqdm(fpaths):
