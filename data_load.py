@@ -69,7 +69,7 @@ def load_data(mode="train"):
                 fpaths, text_lengths, texts = [], [], []
                 transcript = os.path.join(hp.data, 'texts-phoneme.csv')
                 lines = codecs.open(transcript, 'r', 'utf-8').readlines()
-                for line in lines[:3054]+lines[3074:]:
+                for line in lines:
                     #print(line)
                     fname,text = line.strip().split("==")
                     if int(fname.split('-')[1].replace('.wav','')) >= 5655 and int(fname.split('-')[1].replace('.wav',''))<=5674:

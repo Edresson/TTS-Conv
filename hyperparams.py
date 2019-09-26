@@ -54,14 +54,14 @@ class Hyperparams:
     _diacrilics = 'ɚ˞ɫ'
     _phonemes = sorted(list(_vowels + _non_pulmonic_consonants + _pulmonic_consonants + _suprasegmentals + _other_symbols + _diacrilics))
     _phonemes = sorted(list(set(_phonemes)))
-    phoneme_vocab_list = ["P","E"]+_phonemes+list(_phonemes) + list(phoneme_punctuations)
+    phoneme_vocab_list = ["P","E"]+_phonemes+list(phoneme_punctuations)
     phoneme_vocab = ''.join(phoneme_vocab_list)
-    max_N = 180 # Maximum number of characters. default:180
-    max_T = 210 # Maximum number of mel frames. default:210
+    max_N = 470 # Maximum number of characters. default:180
+    max_T = 1000 # Maximum number of mel frames. default:210
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    logdir = "../savedir/logdir-dctts-wavernn-with-phoneme/LJ01"
+    logdir = "../savedir/logdir-dctts-wavernn-with-phoneme-mas_n470-max_t1000/LJ01"
     sampledir = '../savedir/samples'
     B = 10 # batch size
     num_iterations = 2000000
