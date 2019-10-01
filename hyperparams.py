@@ -56,8 +56,8 @@ class Hyperparams:
     _phonemes = sorted(list(set(_phonemes)))
     phoneme_vocab_list = ["P","E"]+_phonemes+list(phoneme_punctuations)
     phoneme_vocab = ''.join(phoneme_vocab_list)
-    max_N = 470 # Maximum number of characters. default:180
-    max_T = 1000 # Maximum number of mel frames. default:210
+    max_N = 180 # Maximum number of characters. default:180
+    max_T = 210 # Maximum number of mel frames. default:210
 
     # training scheme
     lr = 0.001 # Initial learning rate.
